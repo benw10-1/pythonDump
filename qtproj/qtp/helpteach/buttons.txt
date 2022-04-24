@@ -1,0 +1,4 @@
+self.uploadfilebut.clicked.connect(self.uploadFile)
+self.emailsetter.clicked.connect(self.setuserpass)
+self.subjectset.clicked.connect(self.setsubj)
+self.sendemailsbut.clicked.connect(self.sendemails)

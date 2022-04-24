@@ -1,0 +1,109 @@
+def uploadFile(self):
+        filename, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Txt File", "", "Txt Files (*.txt)")
+        global i
+        i=0
+        j=0
+        l=0
+        k=0
+        global emails
+        global names
+        if filename:
+            f = open(filename, 'r')
+            
+            with f:
+                data = f.readlines()                
+                print(data)    
+            for x in data:
+                i += 1
+            z = (i+1)/2
+            data2="".join(data)
+            
+            try:
+                names = [None]*z.__trunc__()
+                emails = [None]*z.__trunc__()
+            except:
+                return 0
+
+            for y in data:
+                
+                if (k/2).__trunc__() == k/2:
+                    names[j] = y.strip()
+                    j += 1
+                else:
+                    emails[l]=y.strip()
+                    l+=1
+
+                k += 1
+            
+            self.visualtxt.setPlainText(data2)
+            ran1 = True
+            f.close()
+
+
+    def setuserpass(self):
+        global username
+        global password
+        username = self.loginuser.text()
+        password = str(self.loginpass.text())
+        print (username)
+        print (password)
+        print (type(username))
+        self.loginuser.clear()
+        self.loginpass.clear()
+        if username and password != "":
+            ran2 = True
+        else:
+            ran2 = False
+        
+        print (str(ran2))
+
+
+    def setsubj(self):
+        global subj
+        subj = str(self.codefinder_2.text())
+        print (subj)
+        self.codefinder_2.clear()
+        
+        
+    def sendemails(self):
+        
+        j=0
+        try:
+            thissub = subj
+        except Exception as e:
+            print(e)
+        port = 465
+        
+        smtp_server = "smtp.gmail.com"
+        
+        message = "Subject: " + thissub
+        
+        
+        context = ssl.create_default_context()
+        server = smtplib.SMTP_SSL(smtp_server, port, context=context)
+        server.login(username+"@gmail.com", password)
+        
+        global old
+        old = ""
+        try:
+            code = [None] * i
+        except Exception as e:
+            print (e)
+        try:
+            while j < (i/2).__trunc__():
+                
+                code[j] = "".join(random.choice(string.digits) for i in range(4))
+                
+                ppp=code[j]
+                
+                lll=names[j].strip()+"#"+ppp.strip()
+                print (lll)
+                server.sendmail(username, emails[j],message+"\nDear: "+names[j]+"\nWrite your name exactly as indicated below BEFORE entering the waiting room.\n"+lll+"\nRemember, this code changes for every class and you will not be let in without the appropriate name.\nThank you, Dolores")
+            
+                new = lll+"\n"
+                old = old + new
+                self.visualtxt.setPlainText(old)
+                
+                j = j + 1
+        except Exception as e:
+            print (e)

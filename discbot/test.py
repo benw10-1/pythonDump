@@ -1,0 +1,1 @@
+print("+move asd"[:5])
